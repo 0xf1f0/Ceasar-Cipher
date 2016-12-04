@@ -5,8 +5,6 @@
 #include <cstring>
 #include <cstdlib>
 
-#define LIST "abcdefghijklmnopqrstuvwxyz"  //The list of alphabetical letters
-
 using namespace std;
 
 /* Fucntion prototype */
@@ -15,7 +13,9 @@ string plainText();
 string leftSegment(const string&);
 string rightSegment(const string&);
 string leftCipher(string&, const int);
-string rightCipher(const string&, int);
+string rightCipher(string&, const int);
+string interleaved(string& , string&);
+
 
 int main()
 {
@@ -23,15 +23,17 @@ int main()
     string leftSeg;     //The left segment of the plaintext
     string rightSeg;    //The right segment of the plaintext
     string leftCi;
+    string rightCi;
     int option = 0;     //Option for the main menu
-    int key = 0;         //Number of shift positions
+    int key = 0;        //Number of shift positions
     mainMenu();
 
-    cout << "Enter your option: ";
+    cout << "\nEnter your option: ";
     cin >> option;
     cin.ignore();
     while(1)
     {
+        //Encrypt a plaintext
         if(option == 1)
         {
             plaintext = plainText();
@@ -41,8 +43,24 @@ int main()
             cout << "Right Segment: " << rightSeg << "\n";
 
             leftCi = leftCipher(leftSeg, 4);
+            rightCi = rightCipher(rightSeg, 4);
 
+            /* Interleave the each cipher text from leftCi and rightCi*/
+            string interleave;
+            string temp1;
+            string temp2;
+
+                for(int i = 0; i < leftCi.length(); i++)
+                {
+                    for(int k = 0; k < rightCi.length(); k++)
+                    {
+
+                    }
+                    cout << "\nThe temp Cipher[" << j <<"]: " << interleave[j];
+                }
         }
+
+        //Decrypt a cipher text
         else if(option == 2)
         {
             break;
@@ -56,7 +74,7 @@ int main()
         {
             cout << "Invalid option, try again\n";
         }
-        cout << "Enter your option: ";
+        cout << "\nEnter your option: ";
         cin >> option;
         cin.ignore();
     }
@@ -81,11 +99,11 @@ void mainMenu()
 
 string plainText()
 {
-    int i = 0;
     string text;
     cout << "\nEnter a plaintext: ";
     getline(cin, text);
-    for(i; i < text.length(); i++)
+
+    for(int i = 0; i < text.length(); i++)
     {
         if(text[0] == '\0')
         {
@@ -118,23 +136,16 @@ string rightSegment(const string &input)
 
 string leftCipher(string &leftText, const int k1)
 {
-    string lText;
-    string input;
-
-    int i = 0;
-    int k = 0;
     int len = 0;
-
-
 
     cout << "The key[k1]: " << k1 <<"\n";
     cout << "The left text: " << leftText <<"\n";
 
     len = leftText.length();
 
-    for(i; i < len; i++)
+    for(int i = 0; i < len; i++)
     {
-        for(k; k < k1; k++)
+        for(int k = 0; k < k1; k++)
         {
             /*Restart the shifting from 'a' when at 'z'
               Else continue shifting
@@ -142,7 +153,7 @@ string leftCipher(string &leftText, const int k1)
             if(leftText[i] == 'z')
                 leftText[i] = 'a';
             else
-                leftText[i]++;
+                leftText[i]++ ;
             cout << "The Left Cipher[" << i <<"]: " << leftText[i] << "\n";
         }
     }
@@ -150,8 +161,29 @@ string leftCipher(string &leftText, const int k1)
     return leftText;
 }
 
-string rightCipher(const string &leftText, int k2)
+string rightCipher(string &rightText, const int k2)
 {
+    int len = 0;
 
+    cout << "The key[k2]: " << k2 <<"\n";
+    cout << "The left text: " << rightText <<"\n";
 
+    len = rightText.length();
+
+    for(int i = 0; i < len; i++)
+    {
+        for(int k = 0; k < k2; k++)
+        {
+            /*Restart the shifting from 'a' when at 'z'
+              Else continue shifting
+            */
+            if(rightText[i] == 'z')
+                rightText[i] = 'a';
+            else
+                rightText[i]++ ;
+            cout << "The Left Cipher[" << i <<"]: " << rightText[i] << "\n";
+        }
+    }
+    cout << "The Left Cipher: " << rightText << "\n";
+    return rightText;
 }
