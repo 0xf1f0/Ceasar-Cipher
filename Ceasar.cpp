@@ -14,7 +14,9 @@ string leftSegment(const string&);
 string rightSegment(const string&);
 string leftCipher(string&, const int);
 string rightCipher(string&, const int);
-string interleaved(string& , string&);
+string interLeavedCipher(const string&, const string&);
+string ceasarCipher(string&, const int);
+
 
 
 int main()
@@ -46,18 +48,11 @@ int main()
             rightCi = rightCipher(rightSeg, 4);
 
             /* Interleave the each cipher text from leftCi and rightCi*/
-            string interleave;
-            string temp1;
-            string temp2;
-
-                for(int i = 0; i < leftCi.length(); i++)
-                {
-                    for(int k = 0; k < rightCi.length(); k++)
-                    {
-
-                    }
-                    cout << "\nThe temp Cipher[" << j <<"]: " << interleave[j];
-                }
+            string interCipher;
+            interCipher = interLeavedCipher(leftCi, rightCi);
+            /* Encrypt the interleaved cipher text using k3 */
+            string finalCipher;
+            finalCipher = ceasarCipher(interCipher, 4);
         }
 
         //Decrypt a cipher text
@@ -154,7 +149,7 @@ string leftCipher(string &leftText, const int k1)
                 leftText[i] = 'a';
             else
                 leftText[i]++ ;
-            cout << "The Left Cipher[" << i <<"]: " << leftText[i] << "\n";
+           //cout << "The Left Cipher[" << i <<"]: " << leftText[i] << "\n";
         }
     }
     cout << "The Left Cipher: " << leftText << "\n";
@@ -166,7 +161,7 @@ string rightCipher(string &rightText, const int k2)
     int len = 0;
 
     cout << "The key[k2]: " << k2 <<"\n";
-    cout << "The left text: " << rightText <<"\n";
+    cout << "The right text: " << rightText <<"\n";
 
     len = rightText.length();
 
@@ -181,9 +176,46 @@ string rightCipher(string &rightText, const int k2)
                 rightText[i] = 'a';
             else
                 rightText[i]++ ;
-            cout << "The Left Cipher[" << i <<"]: " << rightText[i] << "\n";
+            //cout << "The right Cipher[" << i <<"]: " << rightText[i] << "\n";
         }
     }
-    cout << "The Left Cipher: " << rightText << "\n";
+    cout << "The right Cipher: " << rightText << "\n";
     return rightText;
+}
+
+
+ string interLeavedCipher(const string &lCipher, const string &rCipher)
+ {
+     if (lCipher.length() == 0)
+        return rCipher;
+     if (rCipher.length() == 0)
+        return lCipher;
+     return (lCipher.substr(0,1) + rCipher.substr(0,1) + interLeavedCipher(lCipher.substr(1), rCipher.substr(1)));
+ }
+
+
+ string ceasarCipher(string &interCipher, const int k3)
+{
+    int len = 0;
+
+    cout << "The key[k3]: " << k3 <<"\n";
+    cout << "The interCipher: " << interCipher <<"\n";
+
+    len = interCipher.length();
+
+    for(int i = 0; i < len; i++)
+    {
+        for(int k = 0; k < k3; k++)
+        {
+            /*Restart the shifting from 'a' when at 'z'
+              Else continue shifting
+            */
+            if(interCipher[i] == 'z')
+                interCipher[i] = 'a';
+            else
+                interCipher[i]++ ;
+        }
+    }
+    cout << "\nThe final Cipher text: " << interCipher << "\n";
+    return interCipher;
 }
