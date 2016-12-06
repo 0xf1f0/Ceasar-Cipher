@@ -19,7 +19,7 @@ string ceasarCipher(string&, const int);
 string ceasarDecipher(string&, const int);
 string leftDecipher(string&, const int);
 string rightDecipher(string&, const int);
-
+string interLeavedDecipher(string&, string&);
 
 
 int main()
@@ -127,7 +127,11 @@ int main()
                             cout << "Right Cipher: " << rightCi << "\n";
 
                             string interCipher;
-                            interCipher = interLeavedCipher(leftCi, rightCi);
+                            interCipher = interLeavedDecipher(leftCi, rightCi);
+                            //Reshuffle the ciphers to deinterleaved them
+            			leftCi= leftSegment(interCipher);
+                            	rightCi = rightSegment(interCipher);
+				interCipher = interLeavedCipher(leftCi, rightCi);
 
                             string lDecipher;
                             string rDecipher;
@@ -143,6 +147,7 @@ int main()
                         else
                         {
                             cout << "\nInvalid input(s)\n";
+                            break;
                         }
                     }
                 }
@@ -284,7 +289,7 @@ string rightCipher(string &rightText, const int k2)
      if (lCipher.length() == 0)
         return rCipher;
      if (rCipher.length() == 0)
-        return lCipher;
+        return  lCipher;
      return (lCipher.substr(0,1) + rCipher.substr(0,1) + interLeavedCipher(lCipher.substr(1), rCipher.substr(1)));
  }
 
@@ -400,5 +405,29 @@ string rightDecipher(string &rightCi, const int k2)
     return rightCi;
 }
 
+string interLeavedDecipher(string& lCipher, string& rCipher)
+{
+    string temp;
+    string temp1;
+    string current;
+
+    if (lCipher.length() == 0)
+        return rCipher;
+    if (rCipher.length() == 0)
+        return  lCipher;
+    if(rCipher.length() % 2 == 1)
+    {
+        temp = rCipher.back();
+        rCipher.pop_back();
+        rCipher = rCipher + temp;
+        current = (lCipher.substr(0,1) + rCipher.substr(0,1) + interLeavedCipher(lCipher.substr(1), rCipher.substr(1)));
+
+    }
+    else
+    {
+        current = (lCipher.substr(0,1) + rCipher.substr(0,1) + interLeavedCipher(lCipher.substr(1), rCipher.substr(1)));
+    }
+    return current;
+}
 
 /* End of decryption block */
